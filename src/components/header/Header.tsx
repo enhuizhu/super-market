@@ -32,7 +32,7 @@ export const Header = () => {
   return (<div className={classes.root}>
     <div className={classes.siteTitle}>Super Market</div>
     <div className={classes.navigation}>
-      {routes.map(route => (<Link to={route.url}>{typeof route.label === 'string' ?
+      {routes.map(route => (<Link to={route.url} key={route.url}>{typeof route.label === 'string' ?
         route.label : <route.label/>
       }</Link>))}
     </div>

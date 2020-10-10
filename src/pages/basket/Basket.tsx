@@ -1,10 +1,10 @@
 import React from 'react';
-import { Card, CardContent, Divider } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Card, CardContent, Divider, Icon } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Product } from '../../interfaces/product.interface';
 import { formatPrice, getTotalAndSavings } from '../../utils/app.util';
-import { addToBasket } from '../../store/actions';
+import { addToBasket, removeFromBasket } from '../../store/actions';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -42,12 +42,15 @@ const useStyles = makeStyles(() => ({
 
   totalToPay: {
     marginTop: 20,
-  }
+  },
 
+  deleteIcon: {
+    cursor: 'pointer',
+  },
 
 }));
 
-export const Basket = ({ products, addToBasket }: any) => {
+export const Basket = ({ products, addToBasket, removeFromBasket }: any) => {
   const classes = useStyles();
   const savings: any[] = [];
   let originalSum = 0;
@@ -76,8 +79,13 @@ export const Basket = ({ products, addToBasket }: any) => {
                 savedCost: totalAndSavedCost.savedCost,
               });
             }
-            return <div className={classes.item}>
+            return <div className={classes.item} key={p.id}>
               <div className={classes.itemInfo}>
+                <span title='delete'>
+                  <Icon color='secondary' className={classes.deleteIcon} onClick={() => {
+                    removeFromBasket(p);
+                  }}>delete</Icon>
+                </span>
                 <span>{p.name} &nbsp; {formatPrice(p.price)}</span> 
                 <span>x</span>
                 <span>
@@ -107,8 +115,8 @@ export const Basket = ({ products, addToBasket }: any) => {
             <div>
               <h4>Savings</h4>
               {
-                savings.map((saving: any) => {
-                  return <div className={classes.item}>
+                savings.map((saving: any, index) => {
+                  return <div className={classes.item} key={index}>
                     <div className={classes.itemInfo}>
                       <span>{saving.description}</span>
                     </div>
@@ -141,6 +149,9 @@ const mapStateToProps = (state: any) => ({
 const mapActionToProps = (dispatch: any) => ({
   addToBasket: (p: Product) => {
     dispatch(addToBasket(p))
+  },
+  removeFromBasket: (p: Product) => {
+    dispatch(removeFromBasket(p));
   },
 });
 

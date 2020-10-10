@@ -19,7 +19,7 @@ export const Home = (props: any) => {
 
   return <div className={classes.root}>
     { products.map((p: Product) => (
-      <ProductCard product={p} onAddToBasket={addToBasket}></ProductCard>
+      <ProductCard product={p} onAddToBasket={addToBasket} key={p.id}></ProductCard>
     ))}
   </div>;
 };
