@@ -7,12 +7,14 @@ const initialState: Product[] = [
     name: 'Beans',
     price: 0.5,
     policy: THREE_FOR_TWO,
+    policyDescription: '3 for 2'
   },
   {
     id: 2,
     name: 'Coke',
     price: 0.7,
     policy: TWO_FOR_ONE_POUND,
+    policyDescription: '2 for £1',
   },
   {
     id: 3,

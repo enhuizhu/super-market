@@ -1,4 +1,5 @@
 import { Product } from '../interfaces/product.interface';
+import { THREE_FOR_TWO, TWO_FOR_ONE_POUND } from '../constants/policies.constants';
 
 export const isProductInBasket = (products: Product[], product: Product): boolean => {
   return products.some(p => p.id === product.id);
@@ -11,8 +12,8 @@ export const ThreeForTwo = (product: Product) => {
   const newTotal = newQuantity * product.price;
   
   return  {
-    total: newTotal.toFixed(2),
-    savedCost: (product.price * totalQuantity - newTotal).toFixed(2),
+    total: newTotal,
+    savedCost: product.price * totalQuantity - newTotal,
   }
 }
 
@@ -23,8 +24,25 @@ export const twoForOnePound = (product: Product) => {
   const newTotal = numberOfTwo + rest * product.price;
   
   return {
-    total: newTotal.toFixed(2),
-    savedCost: (product.price * totalQuantity - newTotal).toFixed(2),
+    total: newTotal,
+    savedCost: product.price * totalQuantity - newTotal,
   }
 }
 
+export const getTotalAndSavings = (product: Product) => {
+  switch(product.policy) {
+    case THREE_FOR_TWO:
+      return ThreeForTwo(product);
+    case TWO_FOR_ONE_POUND:
+      return twoForOnePound(product);
+    default:
+      return {
+        total: product.price * (product.quantity || 0),
+        savedCost: 0,
+      }
+  }
+}
+
+export const formatPrice = (price: number | string): string => {
+  return `£${Number(price).toFixed(2)}`;
+}

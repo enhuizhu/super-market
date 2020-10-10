@@ -10,7 +10,14 @@ export default (state = initialState, {type, payload}: any) => {
       if (!isProductInBasket(state, payload)) {
         return [...state, payload];
       } else {
-        return state;
+        // find the product index
+        const index = state.findIndex((p) =>  p.id === payload.id);
+
+        if (index !== -1) {
+          state[index] = payload; 
+        }
+
+        return [...state];
       }
     case REMOVE_FROM_BASKET:
       return state.filter((product) => {

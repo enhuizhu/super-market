@@ -3,6 +3,7 @@ export interface Product {
   name: string,
   price: number,
   policy?: string,
+  policyDescription?: string,
   unit?: string,
   quantity?: number, 
 }

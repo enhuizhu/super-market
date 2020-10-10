@@ -1,5 +1,5 @@
 import { Product } from '../interfaces/product.interface';
-import { isProductInBasket, ThreeForTwo, twoForOnePound } from './app.util';
+import { formatPrice, isProductInBasket, ThreeForTwo, twoForOnePound } from './app.util';
 
 describe('app util test', () => {
   it('check if product in the basket', () => {
@@ -35,34 +35,34 @@ describe('app util test', () => {
       quantity: 3,
     };
     let result = ThreeForTwo(product)
-    expect(result.total).toBe("2.00");
-    expect(result.savedCost).toBe("1.00");
+    expect(result.total).toBe(2);
+    expect(result.savedCost).toBe(1);
 
     product.quantity = 1;
     result = ThreeForTwo(product)
-    expect(result.total).toBe("1.00");
-    expect(result.savedCost).toBe("0.00");
+    expect(result.total).toBe(1);
+    expect(result.savedCost).toBe(0);
     
     product.quantity = 2;
     result = ThreeForTwo(product)
-    expect(result.total).toBe("2.00");
-    expect(result.savedCost).toBe("0.00");
+    expect(result.total).toBe(2);
+    expect(result.savedCost).toBe(0);
 
 
     product.quantity = 4;
     result = ThreeForTwo(product)
-    expect(result.total).toBe("3.00");
-    expect(result.savedCost).toBe("1.00");
+    expect(result.total).toBe(3);
+    expect(result.savedCost).toBe(1);
 
     product.quantity = 5;
     result = ThreeForTwo(product)
-    expect(result.total).toBe("4.00");
-    expect(result.savedCost).toBe("1.00");
+    expect(result.total).toBe(4);
+    expect(result.savedCost).toBe(1);
 
     product.quantity = 6;
     result = ThreeForTwo(product)
-    expect(result.total).toBe("4.00");
-    expect(result.savedCost).toBe("2.00");
+    expect(result.total).toBe(4);
+    expect(result.savedCost).toBe(2);
   });
 
   it('twoForOnePound', () => {
@@ -74,12 +74,21 @@ describe('app util test', () => {
     };
 
     let result = twoForOnePound(product);
-    expect(result.total).toBe("0.70");
-    expect(result.savedCost).toBe("0.00");
+    expect(result.total).toBe(0.70);
+    expect(result.savedCost).toBe(0);
 
     product.quantity = 2;
     result = twoForOnePound(product);
-    expect(result.total).toBe("1.00");
-    expect(result.savedCost).toBe("0.40");
+    expect(result.total).toBe(1);
+    expect(result.savedCost.toFixed(2)).toBe('0.40');
+
+    product.quantity = 3;
+    result = twoForOnePound(product);
+    expect(result.total).toBe(1.7);
+    expect(result.savedCost.toFixed(2)).toBe('0.40');
   });
+
+  it('formatPrice', () => {
+    expect(formatPrice(1)).toEqual('£1.00')
+  })
 });
