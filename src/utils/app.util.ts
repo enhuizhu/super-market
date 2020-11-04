@@ -1,5 +1,5 @@
 import { Product } from '../interfaces/product.interface';
-import { THREE_FOR_TWO, TWO_FOR_ONE_POUND } from '../constants/policies.constants';
+import { BUY_ONE_GET_ONE_FREE, THREE_FOR_TWO, TWO_FOR_ONE_POUND, DISCOUNT_AFTER_THREE } from '../constants/policies.constants';
 
 export const isProductInBasket = (products: Product[], product: Product): boolean => {
   return products.some(p => p.id === product.id);
@@ -29,12 +29,48 @@ export const twoForOnePound = (product: Product) => {
   }
 }
 
+export const disCountAfterThree = (product: Product) => {
+  const totalQuantity = product.quantity || 0;
+  const singlePrice = totalQuantity >= 3 ? 4.5 : product.price;
+  const newTotal = singlePrice * totalQuantity;
+  const originalTotal = totalQuantity * product.price;
+  
+  return {
+    total: newTotal,
+    savedCost: originalTotal - newTotal,
+  }
+}
+
+export const buyOneGetOneFree = (product: Product) => {
+  const totalQuantity = product.quantity || 0;
+  const originalTotal = product.price * totalQuantity;
+  
+  let newTotal = 0;
+
+  if (totalQuantity >= 2) {
+    const rest = totalQuantity % 2;
+    const newQuantity = (totalQuantity - rest) / 2 + rest;
+    newTotal =  product.price * newQuantity;
+  } else {
+    newTotal = originalTotal;
+  }
+
+  return {
+    total: newTotal,
+    savedCost: originalTotal - newTotal,
+  }
+}
+
 export const getTotalAndSavings = (product: Product) => {
   switch(product.policy) {
     case THREE_FOR_TWO:
       return ThreeForTwo(product);
     case TWO_FOR_ONE_POUND:
       return twoForOnePound(product);
+    case BUY_ONE_GET_ONE_FREE:
+      return buyOneGetOneFree(product);
+    case DISCOUNT_AFTER_THREE:
+      return disCountAfterThree(product);
     default:
       return {
         total: product.price * (product.quantity || 0),
