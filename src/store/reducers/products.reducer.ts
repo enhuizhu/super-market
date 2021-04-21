@@ -16,7 +16,7 @@ const initialState: Product[] = [
     code: 'orange',
     price: 0.25,
     policy: THREE_FOR_TWO,
-    policyDescription: '3 for the price of 2 on',
+    policyDescription: '3 for the price of 2',
   }
 ];
 
